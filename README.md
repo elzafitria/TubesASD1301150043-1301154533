@@ -10,3 +10,6 @@ Elza Fitria D - 1301154533
 
 
 Judul : Database karyawan PT. Jadi Terus
+
+"My code doesn't works but I have no idea why, my code works but I have no idea why"
+Something magic, maybe?
