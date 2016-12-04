@@ -6,26 +6,26 @@
 #include <conio.h>
 using namespace std;
 
-List_parent LP;
-List_child LC;
-address_child AC;
-address_parent AP;
-infotype_parent XP;
-infotype_child XC;
+List_cabang LP;
+List_karyawan LC;
+address_karyawan AC;
+address_cabang AP;
+infotype_cabang XP;
+infotype_karyawan XC;
 
 void mainMenu();
 void clrscr();
 void daftar();
 void login();
 void admin();
-void menuUser(List_parent &L,address_parent &P);
+void menuUser(List_cabang &L,address_cabang &P);
 void menuAdmin();
 void tambahtiket();
 
 int main()
 {
-    createListParent(LP);
-    createListChild(LC);
+    createListcabang(LP);
+    createListkaryawan(LC);
     int pil=0;
     while(pil!=10)
     {
@@ -53,11 +53,11 @@ int main()
             /*daftar();
             break;*/
                 system("CLS");
-                infotype_parent x;
+                infotype_cabang x;
                 cout<<"Cek kesediaan ID yang ingin dibuat"<<endl;
                 cout<<"ID : ";
                 cin>>x.id_cabang;
-                if (findElmParent(LP,x) != NULL)
+                if (findElmcabang(LP,x) != NULL)
                 {
                     cout<<"ID sudah ada"<<endl;
                     getch();
@@ -74,12 +74,12 @@ int main()
                     cin>>x.kota_cabang;
                     cout<<"NAMA KEPALA CABANG   : ";
                     cin>>x.kepala_cabang;
-                    address_parent Q = first(LP);
-                    address_parent tempP = first(LP);
-                    address_parent P = alokasiParent(x);
+                    address_cabang Q = first(LP);
+                    address_cabang tempP = first(LP);
+                    address_cabang P = alokasicabang(x);
                     if (first(LP) == NULL)
                     {
-                        insertFirstParent(LP,P);
+                        insertFirstcabang(LP,P);
                     }
                     else
                     {
@@ -91,7 +91,7 @@ int main()
                             }
                             Q = next(Q);
                         }
-                        insertAfterParent(LP,tempP,P);
+                        insertAftercabang(LP,tempP,P);
                     }
                     cout<<"Data berhasil diinput"<<endl;
                     cout<<"---------------------"<<endl<<endl;
@@ -103,12 +103,12 @@ int main()
             break;*/
             {
                 system("CLS");
-                infotype_child P;
-                infotype_child x;
+                infotype_karyawan P;
+                infotype_karyawan x;
                 cout<<"Cek ID Karyawan"<<endl;
                 cout<<"ID Karyawan: ";
                 cin>>x.id_karyawan;
-                if (findElmChild(LC,x) != NULL)
+                if (findElmkaryawan(LC,x) != NULL)
                     {
                         cout<<"ID Sudah ada"<<endl;
                         getch();
@@ -127,12 +127,12 @@ int main()
                         cout<<"ALAMAT KARYAWAN      : ";
                         cin>>x.alamat;
 
-                        /*address_child Q = first(LC);
-                        address_child tempC = first(LC);
-                        address_child C = alokasiChild(x);*/
+                        /*address_karyawan Q = first(LC);
+                        address_karyawan tempC = first(LC);
+                        address_karyawan C = alokasikaryawan(x);*/
                         if (first(LC) == NULL)
                         {
-                            insertFirstChild(LC,AC);
+                            insertFirstkaryawan(LC,AC);
                         }
 
                         /*else
@@ -143,11 +143,11 @@ int main()
                                 {
                                     if (info(first(LC)).id_karyawan > x.id_karyawan)
                                     {
-                                        insertLastChild(LC,C);
+                                        insertLastkaryawan(LC,C);
                                     }
                                     else if (info(first(LC)).id_karyawan < x.id_karyawan)
                                     {
-                                        insertFirstChild(LC,C);
+                                        insertFirstkaryawan(LC,C);
                                     }
                                 }
 
@@ -158,7 +158,7 @@ int main()
                                 }
                                 Q = next(Q);
                             }
-                            insertAfterChild(LC,tempC,C);
+                            insertAfterkaryawan(LC,tempC,C);
                         }
                         getch();*/
                     }
@@ -167,15 +167,15 @@ int main()
             {
             /*admin();
             break;*/
-                infotype_parent x;
+                infotype_cabang x;
                 system("CLS");
                 cout<<"Masukan ID cabang yang ingin dicari: ";
                 cin>>x.id_cabang;
                 cout<<"====================================";
                 cout<<endl;
-                if (findElmParent(LP,x) != NULL)
+                if (findElmcabang(LP,x) != NULL)
                     {
-                        printInfoParent(LP);
+                        printInfocabang(LP);
                         /*cout<<"ID CABANG:           : ";
                         cout<<x.id_cabang;
                         cout<<endl;
@@ -203,11 +203,11 @@ int main()
             /*exit(10);
             break;*/
                 system("CLS");
-                infotype_child x;
+                infotype_karyawan x;
                 cout<<"Masukan ID karyawan yang ingin dicari: ";
                 cin>>x.id_karyawan;
                 cout<<"====================================";
-                if (findElmChild(LC,x) != NULL)
+                if (findElmkaryawan(LC,x) != NULL)
                     {
                         cout<<"ID KARYAWAN          : ";
                         cout<<x.id_karyawan;
@@ -235,11 +235,11 @@ int main()
             {
 
                 system("CLS");
-                infotype_parent x;
+                infotype_cabang x;
                 cout<<"Masukan ID cabang yang ingin diedit: ";
                 cin>>x.id_cabang;
                 cout<<"======================================";
-                if (findElmParent(LP,x) != NULL)
+                if (findElmcabang(LP,x) != NULL)
                 {
                     cout<<"ID CABANG:           : ";
                     cin>>x.id_cabang;
@@ -267,11 +267,11 @@ int main()
         else if (pil==6)
             {
                 system("CLS");
-                infotype_child x;
+                infotype_karyawan x;
                 cout<<"Masukan ID karyawan yang ingin diedit: ";
                 cin>>x.id_karyawan;
                 cout<<"====================================";
-                if (findElmChild(LC,x) != NULL)
+                if (findElmkaryawan(LC,x) != NULL)
                     {
                         cout<<"ID KARYAWAN          : ";
                         cin>>x.id_karyawan;
@@ -299,8 +299,8 @@ int main()
         else if (pil==7)
         {
             system("CLS");
-            printInfoParent(LP);
-            infotype_parent x;
+            printInfocabang(LP);
+            infotype_cabang x;
             if (first(LP)==NULL)
             {
                 cout<<"Data tidak ada"<<endl;
@@ -310,22 +310,22 @@ int main()
             {
                 cout<<"Input ID cabang: ";
                 cin>>x.id_cabang;
-                address_parent tempP = first(LP);
-                if(findElmParent(LP,x)==NULL)
+                address_cabang tempP = first(LP);
+                if(findElmcabang(LP,x)==NULL)
                 {
                     cout<<"ID tidak ada"<<endl;
                     getch();
                 }
                 else
                 {
-                    address_parent P = findElmParent(LP,x);
+                    address_cabang P = findElmcabang(LP,x);
                     if(P==first(LP))
                     {
-                        deleteFirstParent(LP,P);
+                        deleteFirstcabang(LP,P);
                     }
                     else if(next(P)==first(LP))
                     {
-                        deleteLastParent(LP,P);
+                        deleteLastcabang(LP,P);
                     }
                     else
                     {
@@ -333,7 +333,7 @@ int main()
                         {
                             if(next(tempP)==P)
                             {
-                                deleteAfterParent(LP,tempP,P);
+                                deleteAftercabang(LP,tempP,P);
                             }
                             tempP=next(tempP);
                         }while(P!=first(LP));
@@ -347,7 +347,7 @@ int main()
 
         else if (pil==8)
         {
-            printInfoChild(LC);
+            printInfokaryawan(LC);
             if(first(LC)==NULL)
             {
                 cout<<"Data tidak tersedia";
@@ -357,17 +357,17 @@ int main()
             {
                 cout<<"Masukan ID karyawan: ";
                 cin>>XC.id_karyawan;
-                address_child C = findElmChild(LC,XC);
-                address_child tempC = first(LC);
-                address_child findC;
-                address_child delC=C;
+                address_karyawan C = findElmkaryawan(LC,XC);
+                address_karyawan tempC = first(LC);
+                address_karyawan findC;
+                address_karyawan delC=C;
                 if(C==first(LC))
                 {
-                    deleteFirstChild(LC,delC);
+                    deleteFirstkaryawan(LC,delC);
                 }
                 else if (C==last(LC))
                 {
-                    deleteLastChild(LC,C);
+                    deleteLastkaryawan(LC,C);
                 }
                 else
                 {
@@ -375,7 +375,7 @@ int main()
                     {
                         if (next(tempC)==C)
                         {
-                            deleteAfterChild(LC,tempC,C);
+                            deleteAfterkaryawan(LC,tempC,C);
                         }
                         tempC=next(tempC);
                     }
@@ -387,10 +387,10 @@ int main()
         else if (pil==9)
         {
             system("CLS");
-            printInfoParent(LP);
+            printInfocabang(LP);
             getch();
             /*AP = first(LP);
-            infotype_parent x;
+            infotype_cabang x;
             while (AP!=NULL)
             {
                     cout<<"ID CABANG:           : ";
@@ -410,7 +410,7 @@ int main()
                     cout<<endl;
                     cout<<"---------------------------"<<endl;
                     cout<<endl;
-                    printInfoChild(LC);
+                    printInfokaryawan(LC);
                     cout<<endl;
                     AP=next(AP);
             }*/
