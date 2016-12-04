@@ -87,7 +87,35 @@ while(pilihan!=10)
         }
         getch();
     }
-    else if (pilihan ==2)
+
+    else if(pilihan==2)
+    {
+        system("CLS");
+        cout<<"Data cabang tersedia"<<endl;
+        cout<<"--------------------"<<endl<<endl;
+        printinfo_cabang(l);
+        cout<<endl;
+        cout<<"Masukan ID Cabang yang ingin diinputkan: ";
+        cin>>cariIDcabang;
+        p=findelm_cabang(l,cariIDcabang);
+        if(p!=NULL)
+        {
+            cout<<endl;
+            karyawan y;
+            add_karyawan(y,p);
+            address_karyawan q=alokasi_karyawan(y);
+            insertlast_karyawan(p,q);
+            system("CLS");
+            cout<<"Data berhasil diinput"<<endl<<endl;
+            printinfo_karyawan(p,q);
+        }
+        else
+        {
+            cout<<"Tidak ada data cabang"<<endl;
+        }
+        getch();
+    }
+    /*else if (pilihan ==2)
 
     {
         system("CLS");
@@ -125,7 +153,7 @@ while(pilihan!=10)
                 add_karyawan(b,p);
                 insertlast_karyawan(p,q);
                 cout<<"Data berhasil diinput"<<endl;
-                cout<<"---------------------"<<endl<<endl;*/
+                cout<<"---------------------"<<endl<<endl;
             }
             cout<<endl;
             karyawan y;
@@ -141,7 +169,7 @@ while(pilihan!=10)
             cout<<"Tidak ada data cabang"<<endl;
         }
         getch();
-    }
+    }*/
 
     else if (pilihan ==3)
     {
