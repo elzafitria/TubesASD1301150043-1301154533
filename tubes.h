@@ -5,8 +5,8 @@
 #include <string>
 
 #define info_cabang(p) (p)->info_cabang
-#define info_karyawan(p) (p)->info_karyawan
 #define prev(p) (p)->prev
+#define info_karyawan(p) (p)->info_karyawan
 #define first(l) ((l).first)
 #define last(l) ((l).last)
 #define firstkaryawan(p) (p)->firstkaryawan
@@ -29,7 +29,8 @@ struct cabang
 struct elmcabang
 {
     cabang info_cabang;
-    address_cabang next,prev;
+    address_cabang next;
+    address_cabang prev;
     address_karyawan firstkaryawan;
 };
 
@@ -45,7 +46,8 @@ struct karyawan
 struct elmkaryawan
 {
     karyawan info_karyawan;
-    address_karyawan next,prev;
+    address_karyawan next;
+    address_karyawan firstkaryawan;
 };
 
 struct List
