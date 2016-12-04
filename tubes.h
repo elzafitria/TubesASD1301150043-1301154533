@@ -1,22 +1,26 @@
 #ifndef TUBES_H_INCLUDED
 #define TUBES_H_INCLUDED
+
 #include <iostream>
-#include <conio.h>
-#include <string>
-
-#define info_cabang(p) (p)->info_cabang
-#define prev(p) (p)->prev
-#define info_karyawan(p) (p)->info_karyawan
-#define first(l) ((l).first)
-#define last(l) ((l).last)
-#define firstkaryawan(p) (p)->firstkaryawan
-/*#define lastkaryawan(p) (p)->lastkaryawan*/
-
 using namespace std;
 
-typedef struct elmcabang *address_cabang;
-typedef struct elmkaryawan *address_karyawan;
 
+
+#define first(L) L.first
+#define last(L) L.last
+#define next(P) P->next
+#define info(P) P->info
+#define karyawan(P) P->karyawan
+#define next(P) P->next
+#define prev(P) P->prev
+
+
+
+
+typedef struct elmlist_cabang *address_cabang;
+typedef struct karyawan infotype_karyawan;
+typedef struct elmlist_karyawan *address_karyawan;
+typedef struct cabang infotype_cabang;
 struct cabang
 {
     int id_cabang;
@@ -24,14 +28,6 @@ struct cabang
     string alamat_cabang;
     string kota_cabang;
     string kepala_cabang;
-};
-
-struct elmcabang
-{
-    cabang info_cabang;
-    address_cabang next;
-    address_cabang prev;
-    address_karyawan firstkaryawan;
 };
 
 struct karyawan
@@ -43,52 +39,54 @@ struct karyawan
     string alamat;
 };
 
-struct elmkaryawan
-{
-    karyawan info_karyawan;
-    address_karyawan next;
-    address_karyawan firstkaryawan;
-};
 
-struct List
-{
+struct List_cabang {
     address_cabang first;
-    address_cabang last;
 };
 
-void createcabang (List &l);
 
-address_cabang alokasi_cabang (cabang a);
-address_karyawan alokasi_karyawan (karyawan b);
+struct elmlist_karyawan{
+    infotype_karyawan info;
+    address_karyawan next;
+    address_karyawan prev;
+};
 
-void insertfirst_cabang (List &l, address_cabang p);
-void insertfirst_karyawan (address_cabang &p, address_karyawan &q);
+struct List_karyawan{
+    address_karyawan first;
+    address_karyawan last;
+};
+struct elmlist_cabang {
+    infotype_cabang info;
+    address_cabang next,prev;
+    List_karyawan karyawan;
 
-void insertafter_cabang (List &l, address_cabang p, address_cabang prec );
-void insertafter_karyawan (address_cabang &p, address_karyawan &q, int x);
+};
 
-void insertlast_cabang (List &l, address_cabang p);
-void insertlast_karyawan (address_cabang &p, address_karyawan &q);
 
-void deletefirst_cabang (List &l, address_cabang p);
-void deletefirst_karyawan (address_cabang &p, address_karyawan &q);
 
-void deleteafter_cabang (List &l, address_cabang p, address_cabang prec);
-void deleteafter_karyawan (address_cabang &p, address_karyawan &q, int y);
 
-void deletelast_cabang (List &l, address_cabang p );
-void deletelast_karyawan (address_cabang &p, address_karyawan &q);
+void createListcabang(List_cabang &L);
+void insertFirstcabang(List_cabang &L, address_cabang P);
+void insertAftercabang(List_cabang &L, address_cabang Prec, address_cabang P);
+void insertLastcabang(List_cabang &L, address_cabang P);
+void deleteFirstcabang(List_cabang &L, address_cabang &P);
+void deleteLastcabang(List_cabang &L, address_cabang &P);
+void deleteAftercabang(List_cabang &L, address_cabang Prec, address_cabang &P);
+address_cabang alokasicabang(infotype_cabang x);
+void dealokasicabang(address_cabang &P);
+address_cabang findElmcabang(List_cabang L, infotype_cabang x);
+void printInfocabang(List_cabang L);
 
-address_cabang findelm_cabang (List l, int x);
-address_karyawan findelm_karyawan (List l, int y);
+void createListkaryawan(List_karyawan &L);
+void insertFirstkaryawan(List_karyawan &L, address_karyawan P);
+void insertLastkaryawan(List_karyawan &L, address_karyawan P);
+void insertAfterkaryawan(List_karyawan &L,address_karyawan Prec, address_karyawan P);
+void deleteFirstkaryawan(List_karyawan &L, address_karyawan &P);
+void deleteLastkaryawan(List_karyawan &L, address_karyawan &P);
+void deleteAfterkaryawan(List_karyawan &L,address_karyawan Prec, address_karyawan &P);
+address_karyawan alokasikaryawan(infotype_karyawan x);
+void dealokasikaryawan(address_karyawan &P);
+address_karyawan findElmkaryawan(List_karyawan L, infotype_karyawan x);
+void printInfokaryawan(List_karyawan L);
 
-void printinfo_cabang (List l );
-void printinfo_karyawan (address_cabang &p, address_karyawan q);
-
-void add_cabang(cabang &x);
-void add_karyawan (karyawan &y, address_cabang &p);
-
-void printinfo_semua (List l);
-
-#endif // TUBES_H_INCLUDED
-
+#endif // RESERV_H_INCLUDED
