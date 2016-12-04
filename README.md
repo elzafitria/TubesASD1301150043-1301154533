@@ -16,5 +16,7 @@ Judul : Database karyawan PT. Jadi Terus
 Like a magic, maybe?
 
 nb: "Tidak ada gading yang tak retak"
+
     Pepatah tersebut menggambarkan program ini yang masih belum sempurna, layaknya manusia yang tidak sempurna. 
+    
     Karena kesempurnaan hanya milik tuhan semata:)
