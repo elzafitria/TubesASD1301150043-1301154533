@@ -16,13 +16,14 @@ int main()
     address_karyawan q;
     createcabang(l);
     int pilihan=0;
-    int cariID;
+    int cariIDcabang;
+    int cariIDkaryawan;
 while(pilihan!=10)
 {
 
+    system("CLS");
     cout<<"                 DATABASE KARYAWAN PT.JADI TERUS             "<<"\n";
     cout<<"============================================================="<<"\n";
-    system("CLS");
     cout<<"Menu: "<<"\n";
     cout<<"1. Tambah cabang "<<"\n";
     cout<<"2. Tambah Karyawan "<<"\n";
@@ -34,29 +35,55 @@ while(pilihan!=10)
     cout<<"8. Hapus data karyawan "<<"\n";
     cout<<"9. Munculkan data keseluruhan"<<"\n";
     cout<<"10. Exit"<<"\n";
+    cout<<"==============================================================="<<"\n";
+    cout<<"Pilihan: ";
     cin>>pilihan;
 
     if (pilihan==1)
     {
+        int cekIDcabang;
         system("CLS");
         cabang x;
-        add_cabang(x);
         if (first(l) == NULL)
         {
+            add_cabang(x);
             p=alokasi_cabang(x);
-            insertlast_cabang(l,p);
+            insertfirst_cabang(l,p);
             system("CLS");
             cout<<"Data berhasil diinput"<<endl;
             cout<<"---------------------"<<endl<<endl;
-            printinfo_cabang(l);
+            //printinfo_cabang(l);
         }
         else
         {
-            insertlast_cabang(l,p);
             system("CLS");
-            cout<<"Data berhasil diinput"<<endl;
-            cout<<"---------------------"<<endl<<endl;
-            printinfo_cabang(List(l));
+            cout<<"Cek kesediaan ID yang ingin dibuat"<<endl;
+            cin>>cariIDcabang;
+            if(findelm_cabang(l,cariIDcabang)!=NULL)
+            {
+                cout<<"ID sudah ada";
+                getch();
+            }
+            else
+            {
+                address_cabang Q = first(l);
+                address_cabang temp = first(l);
+                while ((Q)->next != NULL)
+                {
+                    if(info_cabang((Q)->next).id_cabang < x.id_cabang)
+                    {
+                        temp=(temp)->next;
+                    }
+                    Q=(Q)->next;
+                }
+                add_cabang(x);
+                insertafter_cabang(l,Q,Q);
+                cout<<"Data berhasil diinput"<<endl;
+                cout<<"---------------------"<<endl<<endl;
+            }
+            //insertlast_cabang(l,p);
+
+            //printinfo_cabang(l);
         }
         getch();
     }
@@ -69,8 +96,8 @@ while(pilihan!=10)
         printinfo_cabang(l);
         cout<<endl;
         cout<<"Masukan ID Cabang yang ingin diinputkan: ";
-        cin>>cariID;
-        p=findelm_cabang(l,cariID);
+        cin>>cariIDcabang;
+        p=findelm_cabang(l,cariIDcabang);
         if(p!=NULL)
         {
             cout<<endl;
@@ -84,7 +111,7 @@ while(pilihan!=10)
         }
         else
         {
-            cout<<"Tidak ada data cabang";
+            cout<<"Tidak ada data cabang"<<endl;
         }
         getch();
     }
@@ -93,8 +120,8 @@ while(pilihan!=10)
     {
         system("CLS");
         cout<<"Masukan ID cabang yang ingin dicari: ";
-        cin>>cariID;
-        p=findelm_cabang (l, cariID);
+        cin>>cariIDcabang;
+        p=findelm_cabang (l, cariIDcabang);
         if (p!=NULL)
         {
             printinfo_cabang(l);
@@ -115,13 +142,13 @@ while(pilihan!=10)
         printinfo_cabang(l);
         cout<<endl;
         cout<<"Masukan ID cabang: ";
-        cin>>cariID;
-        p=findelm_cabang(l,cariID);
+        cin>>cariIDcabang;
+        p=findelm_cabang(l,cariIDcabang);
         if(p!=NULL)
         {
             cout<<endl<<"Masukan ID karyawan yang ingin dicari: ";
-            cin>>cariID;
-            q=findelm_karyawan(p,cariID);
+            cin>>cariIDkaryawan;
+            q=findelm_karyawan(p,cariIDkaryawan);
             if(q!=NULL)
             {
                 printinfo_karyawan(p,q);
@@ -146,8 +173,8 @@ while(pilihan!=10)
         printinfo_cabang(l);
         cout<<endl;
         cout<<"Masukan ID cabang yang ingin diubah: "<<endl;
-        cin>>cariID;
-        p=findelm_cabang(l,cariID);
+        cin>>cariIDcabang;
+        p=findelm_cabang(l,cariIDcabang);
         if(p!=NULL)
         {
             cout<<"ID CABANG            : ";
@@ -183,13 +210,13 @@ while(pilihan!=10)
         printinfo_cabang(l);
         cout<<endl;
         cout<<"Masukan ID cabang: ";
-        cin>>cariID;
-        p=findelm_cabang(l,cariID);
+        cin>>cariIDcabang;
+        p=findelm_cabang(l,cariIDcabang);
         if(p!=NULL)
         {
             cout<<endl<<"Masukan ID karyawan yang ingin dicari: ";
-            cin>>cariID;
-            q=findelm_karyawan(p,cariID);
+            cin>>cariIDkaryawan;
+            q=findelm_karyawan(p,cariIDkaryawan);
             if(q!=NULL)
             {
                 cout<<"ID KARYAWAN          : ";
@@ -228,8 +255,8 @@ while(pilihan!=10)
         address_karyawan q;
         printinfo_cabang(l);
         cout<<"Masukan ID cabang yang ingin dihapus: ";
-        cin>>cariID;
-        address_cabang p=findelm_cabang(l,cariID);
+        cin>>cariIDcabang;
+        address_cabang p=findelm_cabang(l,cariIDcabang);
         if(p!=NULL)
         {
             while(firstkaryawan(p)!=NULL)
@@ -257,14 +284,14 @@ while(pilihan!=10)
         address_karyawan q;
         printinfo_cabang(l);
         cout<<"Masukan ID cabang dimana data karyawan ingin dihapus"<<endl<<endl;
-        cin>>cariID;
-        p=findelm_cabang(l,cariID);
+        cin>>cariIDcabang;
+        p=findelm_cabang(l,cariIDcabang);
         if(p!=NULL)
         {
             printinfo_karyawan(p,q);
             cout<<endl<<"Masukan ID karyawan yang ingin dihapus: ";
-            cin>>cariID;
-            deleteafter_karyawan(p, q, cariID - 1);
+            cin>>cariIDkaryawan;
+            deleteafter_karyawan(p, q, cariIDkaryawan);
             cout<<"Data telah terhapus";
 
         }
@@ -274,12 +301,13 @@ while(pilihan!=10)
     else if (pilihan ==9)
     {
         system("CLS");
-        printinfo_semua (l);
+        printinfo_semua(l);
         getch();
     }
 
     else if (pilihan ==10)
     {
+        system("CLS");
         cout<<"Terima Kasih"<<endl;
         cout<<"---------------------------"<<endl;
         cout<<"Egriano Aristianto (1301150043)"<<endl;
