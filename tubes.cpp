@@ -1,311 +1,402 @@
+#include <iostream>
 #include "tubes.h"
-void createListcabang(List_cabang &L)
-{
 
-    first(L) = NULL;
+using namespace std;
+
+int IDcabang=0;
+int IDkaryawan = 0;
+
+void createcabang (List &l)
+{
+    first(l)=NULL;
+    last(l)=NULL;
 }
 
-address_cabang alokasicabang(infotype_cabang x)
+address_cabang alokasi_cabang(cabang a)
 {
-
-
-    address_cabang P;
-    P = new elmlist_cabang;
-    info(P) = x;
-    next(P) = NULL;
-    createListkaryawan(karyawan(P));
-    return P;
+    address_cabang p = new elmcabang;
+    info_cabang(p) = a;
+    (p)->next=NULL;
+    prev(p)=NULL;
+    firstkaryawan(p)=NULL;
+    return p;
 }
 
-void insertFirstcabang(List_cabang &L, address_cabang P)
+address_karyawan alokasi_karyawan (karyawan b)
 {
+    address_karyawan p = new elmkaryawan;
+    info_karyawan(p) = b;
+    (p)->next=NULL;
+    return p;
+}
 
-    address_cabang Q;
-    if(first(L) == NULL)
+void insertfirst_cabang(List &l, address_cabang p)
+{
+    if (first(l) != NULL && last(l) !=NULL)
     {
-        first(L) = P;
-        next(P) = first(L);
+        (p)->next=first(l);
+        prev(first(l))=p;
+        first(l)=p;
+
     }
     else
     {
-        Q = first(L);
-        while(next(Q) != first(L))
+        first(l)=p;
+        last(l)=p;
+    }
+}
+
+void insertlast_cabang (List &l, address_cabang p)
+{
+    if(first(l) == NULL)
+    {
+        insertfirst_cabang(l,p);
+    }
+    else
+    {
+        prev(p)=last(l);
+        (last(l))->next=p;
+        last(l)=p;
+        (p)->next = NULL;
+    }
+}
+
+void insertafter_cabang (List &l, address_cabang p, address_cabang prec)
+{
+    if(first(l) == NULL)
+    {
+        insertfirst_cabang(l,p);
+    }
+    else if ((last(l))->next == NULL)
+    {
+        insertlast_cabang (l,p);
+    }
+    else
+    {
+        (p)->next = (prec)->next;
+        prev(p)=prec;
+        prev((prec)->next)=p;
+        (prec)->next=p;
+    }
+}
+
+void insertfirst_karyawan (address_cabang &p, address_karyawan &q)
+{
+    if(firstkaryawan(p)==NULL)
+        firstkaryawan(p)=q;
+    else
+    {
+        (q)->next=firstkaryawan(p);
+        firstkaryawan(p)=q;
+    }
+}
+
+void insertlast_karyawan (address_cabang &p, address_karyawan &q)
+{
+    if (firstkaryawan(p)== NULL)
+    {
+        insertfirst_karyawan(p,q);
+    }
+    else
+    {
+        address_karyawan a = firstkaryawan(p);
+        while((a)->next!=NULL)
         {
-            Q = next(Q);
+            a=(a)->next;
         }
-        next(P) = first(L);
-        next(Q) = P;
-        first(L) = P;
+        (a)->next=q;
     }
 }
 
-void insertLastcabang(List_cabang &L, address_cabang P)
-
+void insertafter_karyawan(address_cabang &p, address_karyawan &q, int x)
 {
-    address_cabang Q;
-    if (first(L) == NULL)
+    address_karyawan prec = firstkaryawan(p);
+    if (prec == NULL)
     {
-        first(L) = P;
-        next(P) = first(L);
+        insertfirst_karyawan(p,q);
     }
     else
     {
-        Q = first(L);
-        while (next(Q) != first(L))
+        while(info_karyawan(prec).id_karyawan!=x)
         {
-            Q = next(Q);
+            prec = (prec)->next;
         }
-        next(P) = first(L);
-        next(Q) = P;
-    }
-
-}
-void insertAftercabang(List_cabang &L, address_cabang Prec, address_cabang P)
-{
-    if (first(L) == NULL)
-    {
-        insertFirstcabang(L,P);
-    }
-    else if (next(Prec) == first(L))
-    {
-        insertLastcabang(L,P);
-    }
-    else
-    {
-        next(P) = next(Prec);
-        next(Prec) = P;
-    }
-}
-
-void deleteFirstcabang(List_cabang &L, address_cabang &P)
-{
-    address_cabang Q;
-    if (first(L) != NULL)
-    {
-        P = first(L);
-        if(next(P) == NULL)
+        if ((prec)->next == NULL)
         {
-            first(L) = NULL;
+            insertlast_karyawan(p,q);
         }
         else
         {
-            Q = first(L);
-            while (next(Q) != first(L))
-            {
-                Q=next(Q);
-            }
-            P = first(L);
-            first(L) = next(P);
-            next(P) = NULL;
-            next(Q) = first(L);
-
+            (q)->next=(prec)->next;
+            (prec)->next=q;
         }
     }
 }
-void deleteAftercabang(List_cabang &L, address_cabang Prec, address_cabang &P)
+
+void deletefirst_cabang (List &l, address_cabang p)
 {
-    if (next(Prec) == first(L))
+    if (first(l)==NULL)
     {
-        P = first(L);
-        first(L) = next(P);
-        next(Prec) = first(L);
-        next(P) = NULL;
+        cout<<"Tidak ada data";
+    }
+    else if (first(l) == last(l))
+    {
+        first(l) = NULL;
+        last(l) = NULL;
     }
     else
     {
-        P = next(Prec);
-        next(Prec) = next(P);
-        next(P) = NULL;
+        p=first(l);
+        first(l)=(first(l))->next;
+        (p)->next=NULL;
+        prev(first(l))=NULL;
     }
 }
-void deleteLastcabang(List_cabang &L, address_cabang &P)
+
+void deletelast_cabang (List &l, address_cabang p)
 {
-    address_cabang Q;
-    if (first(L) != NULL)
+    if (first(l) == NULL)
     {
-        P = first(L);
-        if (next(P) == NULL)
+        cout<<"Tidak ada data";
+    }
+    else if (first(l) == last(l))
+    {
+        first(l)=NULL;
+        last(l)=NULL;
+    }
+    else
+    {
+        p=last(l);
+        last(l)=prev(last(l));
+        prev(p)=NULL;
+        (last(l))->next=NULL;
+    }
+}
+
+void deleteafter_cabang (List &l, address_cabang &p, address_cabang prec)
+{
+    if(p == first(l))
+    {
+        deletefirst_cabang(l,p);
+    }
+    else if (p == last(l))
+    {
+        deletelast_cabang(l,p);
+    }
+    else
+    {
+        prec = prev(p);
+        (prec)->next = (p)->next;
+        prev((p)->next)=prec;
+        prev(p)=NULL;
+        (p)->next=NULL;
+    }
+}
+
+void deletefirst_karyawan(address_cabang &p, address_karyawan &q)
+{
+    //if (firstkaryawan(p) != NULL)
+    //{
+        q=firstkaryawan(p);
+        if((q)!=NULL)
         {
-            first(L) = NULL;
+            q=firstkaryawan(p);
+            firstkaryawan(q)=(q)->next;
+            (q)->next=NULL;
         }
         else
         {
-            Q = first(L);
-            while (next(next(Q)) != first(L))
-            {
-                Q =next(Q);
-            }
-            P = next(Q);
-            next(Q) = first(L);
-            next(P) = NULL;
-//dealokasi(P);
+            cout<<"Data tidak ada";
         }
+    ////}
+}
+
+void deletelast_karyawan(address_cabang &p, address_karyawan &q)
+{
+    q=firstkaryawan(p);
+    if(q!=NULL)
+    {
+        while((q)->next!=NULL)
+            q=(q)->next;
+        q=(q)->next;
+        (q)->next=NULL;
+    }
+    else
+    {
+        cout<<"Data tidak ada";
     }
 }
 
-
-void printInfocabang(List_cabang L)
+void deleteafter_karyawan(address_cabang &p, address_karyawan &q, int y)
 {
-    /**
-    * FS : menampilkan info seluruh elemen list L
-    */
-    address_cabang P = first(L);
-    if(first(L)!=NULL)
+    q=firstkaryawan(p);
+    if (q!= NULL)
+    {
+        while (info_karyawan(q).id_karyawan!=y)
+        {
+            q=(q)->next;
+        }
+        if(q=firstkaryawan(p))
+        {
+            deletefirst_karyawan(p,q);
+        }
+        else if ((q)->next==NULL)
+        {
+            deletelast_karyawan(p,q);
+        }
+        else
+        {
+            address_karyawan prec = q;
+            q=(prec)->next;
+            (prec)->next=(q)->next;
+            (q)->next=NULL;
+        }
+    }
+    else
+    {
+        cout<<"Data kosong";
+    }
+}
+
+address_cabang findelm_cabang (List l, int x)
+{
+    address_cabang p;
+    p=first(l);
+    if (p!=NULL)
+    {
+        while(p!=NULL)
+        {
+            if (info_cabang(p).id_cabang==x)
+                return p;
+            else
+                p=(p)->next;
+        }
+    }
+    else
+    {
+        return NULL;
+        cout<<"Data tidak ada"<<endl;
+        cout<<endl;
+    }
+}
+
+address_karyawan findelm_karyawan(address_cabang p, int y)
+{
+    address_karyawan q;
+    q=firstkaryawan(p);
+    if(q!=NULL)
     {
         do
         {
-            cout<<"ID CABANG            : "<<info(P).id_cabang<<endl;
-            cout<<"NAMA CABANG          : "<<info(P).nama_cabang<<endl;
-            cout<<"ALAMAT CABANG        : "<<info(P).alamat_cabang<<endl;
-            cout<<"KOTA CABANG          : "<<info(P).kota_cabang<<endl;
-            cout<<"NAMA KEPALA CABANG   : "<<info(P).kepala_cabang<<endl;
-            printInfokaryawan(karyawan(P));
-            P = next(P);
+            q=(q)->next;
         }
-        while(info(P).id_cabang !=info(first(L)).id_cabang);
-    }
-}
-
-address_cabang findElmcabang(List_cabang L, infotype_cabang x)
-{
-
-       address_cabang P = first(L);
-    if ( first(L) == NULL){
-        return NULL;
-    }
-    else{
-        do {
-            if(info(P).id_cabang == x.id_cabang) {
-                return P;
-            }
-            P = next(P);
-        } while(P != first(L));
-    }
-    return NULL;
-}
-
-
-
-
-void createListkaryawan(List_karyawan &L)
-{
-    first(L) = NULL;
-    last(L) = NULL;
-}
-
-address_karyawan alokasikaryawan(infotype_karyawan x)
-{
-    address_karyawan P = new elmlist_karyawan;
-    info(P) = x;
-    next(P) = NULL;
-    prev(P) = NULL;
-    return P;
-}
-
-void insertFirstkaryawan(List_karyawan &L, address_karyawan P)
-{
-    if(first(L) == NULL)
-    {
-        last(L) = P;
-        first(L) = P;
+        while (info_karyawan(q).id_karyawan!=y);
     }
     else
     {
-        next(P) = first(L);
-        prev(first(L)) = P;
-        first(L) = P;
+        q = NULL;
+        cout<<"Data tidak ada"<<endl;;
     }
-}
-void insertLastkaryawan(List_karyawan &L, address_karyawan P)
-{
-    if(first(L) == NULL)
-    {
-        first(L) = P;
-        last(L) = P;
-    }
-    else
-    {
-        prev(P) = last(L);
-        next(last(L)) = P;
-        last(L) = P;
-    }
-}
-void insertAfterkaryawan(List_karyawan &L,address_karyawan Prec,address_karyawan P){
-    if (first(L) == NULL){
-        insertFirstkaryawan(L,P);
-    }
-    else if (Prec == last(L)){
-        insertLastkaryawan(L,P);
-    }
-    else{
-        next(P) = next(Prec);
-        prev(P) = Prec;
-        prev(next(Prec)) = P;
-        next(Prec) = P;
-    }
+    return q;
 }
 
-void printInfokaryawan(List_karyawan L)
+void printinfo_cabang (List l)
 {
-    address_karyawan P = first(L);
-    while(P !=NULL)
+    address_cabang p=first(l);
+    if (p!=NULL)
     {
-        cout<<"ID KARYAWAN          : "<<info(P).id_karyawan<<endl;
-        cout<<"NAMA KARYAWAN        : "<<info(P).nama_karyawan<<endl;
-        cout<<"JABATAN KARYAWAN     : "<<info(P).jabatan_karyawan<<endl;
-        cout<<"TGL LAHIR KARYAWAN   : "<<info(P).tgl_lahir<<endl;
-        cout<<"ALAMAT KARYAWAN      : "<<info(P).alamat<<endl;
-        P = next(P);
-    }
-}
-
-void deleteFirstkaryawan(List_karyawan &L, address_karyawan &P)
-{
-    if (first(L) == last(L)){
-        first(L) = NULL;
-        last(L) = NULL;
-    }
-    else{
-        P = first(L);
-        first(L) = next(P);
-        next(P) = NULL;
-        prev(first(L)) = NULL;
-    }
-}
-void deleteLastkaryawan(List_karyawan &L, address_karyawan &P)
-{
-    P = last(L);
-    last(L) = prev(last(L));
-    prev(P) = NULL;
-    next(last(L)) = NULL;
-}
-void deleteAfterkaryawan(List_karyawan &L,address_karyawan Prec, address_karyawan &P)
-{
-    if (Prec == last(L))
-    {
-        deleteLastkaryawan(L,P);
-    }
-    else{
-    P = next(Prec);
-    next(Prec) = next(P);
-    prev(next(P)) = Prec;
-    prev(P) = NULL;
-    next(P) = NULL;
-}
-}
-
-address_karyawan findElmkaryawan(List_karyawan L, infotype_karyawan x)
-{
-    address_karyawan P = first(L);
-    while(P != NULL)
-    {
-        if(info(P).id_karyawan ==x.id_karyawan)
+        do
         {
-            return P;
-        }
-        else
-            return NULL;
-            P = next(P);
+        cout<<"ID CABANG            : "<<info_cabang(p).id_cabang<<endl;
+        cout<<"NAMA CABANG          : "<<info_cabang(p).nama_cabang<<endl;
+        cout<<"ALAMAT CABANG        : "<<info_cabang(p).alamat_cabang<<endl;
+        cout<<"KOTA CABANG          : "<<info_cabang(p).kota_cabang<<endl;
+        cout<<"NAMA KEPALA CABANG   : "<<info_cabang(p).kepala_cabang<<endl;
+        p=(p)->next;
+        }while (p!=NULL);
+    }
+    else
+    {
+        cout<<"Data kosong";
+        cout<<endl;
     }
 
+    //cout<<"Jumlah data cabang: "<<i;
+
+}
+
+void printinfo_karyawan (address_cabang &p, address_karyawan q)
+{
+    int j = 0;
+    if (firstkaryawan(p)!=NULL)
+    {
+        q=firstkaryawan(p);
+        while((q)->next!=NULL)
+        {
+            cout<<"ID KARYAWAN          : "<<info_karyawan(q).id_karyawan<<endl;
+            cout<<"NAMA KARYAWAN        : "<<info_karyawan(q).nama_karyawan<<endl;
+            cout<<"JABATAN KARYAWAN     : "<<info_karyawan(q).jabatan_karyawan<<endl;
+            cout<<"TGL LAHIR KARYAWAN   : "<<info_karyawan(q).tgl_lahir<<endl;
+            cout<<"ALAMAT KARYAWAN      : "<<info_karyawan(q).alamat<<endl;
+            q= (q)->next;
+            j++;
+            cout<<endl;
+            cout<<endl;
+        }
+    }
+    cout<<"Jumlah data karyawan: "<<j;
+
+}
+
+void add_cabang (cabang &x)
+{
+    //IDcabang++;
+    //x.id_cabang = IDcabang;
+    cout<<"ID CABANG:           : ";
+    cin>>x.id_cabang;
+    cout<<"NAMA CABANG          : ";
+    cin>>x.nama_cabang;
+    cout<<"ALAMAT CABANG        : ";
+    cin>>x.alamat_cabang;
+    cout<<"KOTA CABANG          : ";
+    cin>>x.kota_cabang;
+    cout<<"NAMA KEPALA CABANG   : ";
+    cin>>x.kepala_cabang;
+}
+
+void add_karyawan (karyawan &y, address_cabang &p)
+{
+    //IDkaryawan++;
+    //y.id_karyawan = IDkaryawan;
+    cout<<"ID KARYAWAN          : ";
+    cin>>y.id_karyawan;
+    cout<<"NAMA KARYAWAN        : ";
+    cin>>y.nama_karyawan;
+    cout<<"JABATAN KARYAWAN     : ";
+    cin>>y.jabatan_karyawan;
+    cout<<"TGL LAHIR KARYAWAN   : ";
+    cin>>y.tgl_lahir;
+    cout<<"ALAMAT KARYAWAN      : ";
+    cin>>y.alamat;
+
+}
+
+void printinfo_semua (List l)
+{
+    address_cabang p;
+    address_karyawan q;
+    p=first(l);
+    while (p!=NULL)
+    {
+        cout<<"ID CABANG            : "<<info_cabang(p).id_cabang<<endl;
+        cout<<"NAMA CABANG          : "<<info_cabang(p).nama_cabang<<endl;
+        cout<<"ALAMAT CABANG        : "<<info_cabang(p).alamat_cabang<<endl;
+        cout<<"KOTA CABANG          : "<<info_cabang(p).kota_cabang<<endl;
+        cout<<"NAMA KEPALA CABANG   : "<<info_cabang(p).kepala_cabang<<endl;
+        cout<<"-----------------------------------------------------------------"<<endl;
+        cout<<endl;
+        printinfo_karyawan(p,q);
+        cout<<endl;
+        p=(p)->next;
+    }
 }
