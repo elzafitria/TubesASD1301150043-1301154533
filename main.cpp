@@ -77,7 +77,7 @@ while(pilihan!=10)
                     Q=(Q)->next;
                 }
                 add_cabang(x);
-                insertafter_cabang(l,Q,Q);
+                insertafter_cabang(l,temp,Q);
                 cout<<"Data berhasil diinput"<<endl;
                 cout<<"---------------------"<<endl<<endl;
             }
